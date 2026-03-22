@@ -20,9 +20,29 @@ client = OpenAI(
     base_url=OPENROUTER_BASE_URL,
     api_key=OPENROUTER_API_KEY,
 ) 
+if OPENROUTER_API_KEY is None or OPENROUTER_BASE_URL is None:
+    client = None
+else:
+    client = OpenAI(
+        base_url=OPENROUTER_BASE_URL,
+        api_key=OPENROUTER_API_KEY,
+    )
 
 class IntegracaoEntrada(BaseModel):
     texto: str
+
+@app.post("/ia/integracao")
+def integrar_ia(entrada: IntegracaoEntrada):
+    if client is None:
+        raise HTTPException(status_code=500, detail="Cliente da API não configurado corretamente.")
+    try:
+        resposta = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[{"role": "user", "content": entrada.texto}]
+        )
+        return {"resposta": resposta.choices[0].message.content}
+    except error.HTTPError as e:
+        raise HTTPException(status_code=502, detail=str(e))
 
 @app.get("/")
 def read_root():
