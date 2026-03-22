@@ -3,6 +3,7 @@ import os
 import requests
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from requests import RequestException, Timeout
 
 app = FastAPI(
     title="API de Implantacao de IA",
@@ -79,14 +80,28 @@ def integrar_ia(entrada: IntegracaoEntrada):
     }
 
     try:
-        req = requests.post(OPENROUTER_URL, headers=headers, json=payload)
-        req.raise_for_status()
-        resposta = req.json()["choices"][0]["message"]["content"]
-        return {"resposta": resposta}
-    except requests.RequestException as e:
-        raise HTTPException(
-            status_code=500, detail=f"Erro ao integrar com a API: {e}"
+        response = requests.post(
+            OPENROUTER_URL,
+            headers=headers,
+            json=payload,
+            timeout=(5, 30),
         )
+        response.raise_for_status()
+
+    except Timeout as e:
+        raise HTTPException(
+            status_code=504,
+            detail="Timeout ao chamar o OpenRouter. Erro: " + str(e),
+        )
+
+    except RequestException as e:
+        raise HTTPException(
+            status_code=502,
+            detail="Falha na chamada ao OpenRouter. Erro: " + str(e),
+        )
+
+    resposta = response.json()["choices"][0]["message"]["content"]
+    return {"resposta": resposta}
 
 
 @app.get("/")
