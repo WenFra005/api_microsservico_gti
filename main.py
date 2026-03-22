@@ -1,7 +1,7 @@
 import os
 import requests
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 app = FastAPI(
     title="API de Implantacao de IA",
@@ -14,7 +14,12 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 MODEL_NAME = "stepfun/step-3.5-flash:free"
 
 class IntegracaoEntrada(BaseModel):
-    texto: str
+    contexto: str = Field(..., description="Contexto do problema ou tarefa para a IA")
+    pergunta: str = Field(..., description="Pergunta principal para a IA responder")
+    objetivo: str = Field(default="Fornecer uma resposta útil e presisa com clareza e objetividade.")
+    formato_saida: str = Field(default="Texto simples")
+    limites: str = Field(default="Evitar respostas vagas ou genéricas, e não fornecer informações falsas ou enganosas.")
+
 
 @app.post("/ia/integracao")
 def integrar_ia(entrada: IntegracaoEntrada):
