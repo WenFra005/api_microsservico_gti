@@ -16,8 +16,18 @@ MODEL_NAME = "stepfun/step-3.5-flash:free"
 
 
 class IntegracaoEntrada(BaseModel):
-    contexto: str = Field(..., description="Contexto do problema ou tarefa para a IA")
-    pergunta: str = Field(..., description="Pergunta principal para a IA responder")
+    """A classe `IntegracaoEntrada` é um modelo de dados que define a estrutura da entrada esperada para a função de integração com a IA. Ela herda de `BaseModel` do Pydantic, o que permite a validação automática dos dados de entrada.
+
+    Args:
+        BaseModel (class): A classe base para modelos de dados no Pydantic, que fornece funcionalidades de validação e serialização.
+    """
+
+    contexto: str = Field(
+        ..., description="Contexto do problema ou tarefa para a IA"
+    )
+    pergunta: str = Field(
+        ..., description="Pergunta principal para a IA responder"
+    )
     objetivo: str = Field(
         default="Fornecer uma resposta útil e presisa com clareza e objetividade."
     )
@@ -29,9 +39,22 @@ class IntegracaoEntrada(BaseModel):
 
 @app.post("/ia/integracao")
 def integrar_ia(entrada: IntegracaoEntrada):
+    """A função `integrar_ia` é um endpoint de API que recebe uma solicitação POST contendo um objeto `IntegracaoEntrada`. Ele utiliza as informações fornecidas para fazer uma solicitação à API do OpenRouter, enviando o contexto, a pergunta, o objetivo, o formato de saída desejado e os limites para a IA. A resposta da IA é então retornada ao cliente.
+
+    Args:
+        entrada (IntegracaoEntrada): Um objeto que contém o contexto, a pergunta, o objetivo, o formato de saída desejado e os limites para a IA.
+
+    Raises:
+        HTTPException: Se as variáveis de ambiente para a chave da API ou a URL do OpenRouter não estiverem configuradas corretamente, ou se houver um erro ao fazer a solicitação à API do OpenRouter, uma exceção HTTP será levantada com um status code 500 e uma mensagem de detalhe apropriada.
+        HTTPException: Se houver um erro ao fazer a solicitação à API do OpenRouter, uma exceção HTTP será levantada com um status code 500 e uma mensagem de detalhe apropriada.
+
+    Returns:
+        dict: Um dicionário contendo a resposta da IA, com a chave "resposta" e o valor sendo a resposta gerada pela IA.
+    """
     if not OPENROUTER_API_KEY or not OPENROUTER_URL:
         raise HTTPException(
-            status_code=500, detail="Cliente da API não configurado corretamente."
+            status_code=500,
+            detail="Cliente da API não configurado corretamente.",
         )
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
@@ -61,14 +84,26 @@ def integrar_ia(entrada: IntegracaoEntrada):
         resposta = req.json()["choices"][0]["message"]["content"]
         return {"resposta": resposta}
     except requests.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao integrar com a API: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao integrar com a API: {e}"
+        )
 
 
 @app.get("/")
 def read_root():
+    """Endpoint para a rota raiz da API.
+
+    Returns:
+        dict: Uma mensagem de boas-vindas à API.
+    """
     return {"message": "Bem-vindo à API de Implantação de IA!"}
 
 
 @app.get("/status")
 def get_status():
+    """Endpoint para verificar o status da API.
+
+    Returns:
+        dict: Um dicionário indicando que a API está funcionando corretamente.
+    """
     return {"status": "API está funcionando corretamente."}
