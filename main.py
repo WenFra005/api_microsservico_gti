@@ -17,10 +17,13 @@ MODEL_NAME = "stepfun/step-3.5-flash:free"
 
 
 class IntegracaoEntrada(BaseModel):
-    """A classe `IntegracaoEntrada` é um modelo de dados que define a estrutura da entrada esperada para a função de integração com a IA. Ela herda de `BaseModel` do Pydantic, o que permite a validação automática dos dados de entrada.
+    """A classe `IntegracaoEntrada` é um modelo de dados que define a estrutura da entrada esperada
+    para a função de integração com a IA. Ela herda de `BaseModel` do Pydantic, o que permite a
+    validação automática dos dados de entrada.
 
     Args:
-        BaseModel (class): A classe base para modelos de dados no Pydantic, que fornece funcionalidades de validação e serialização.
+        BaseModel (class): A classe base para modelos de dados no Pydantic, que fornece
+        funcionalidades de validação e serialização.
     """
 
     contexto: str = Field(
@@ -34,23 +37,32 @@ class IntegracaoEntrada(BaseModel):
     )
     formato_saida: str = Field(default="Texto simples")
     limites: str = Field(
-        default="Evitar respostas vagas ou genéricas, e não fornecer informações falsas ou enganosas."
+        default="Evitar respostas vagas ou genéricas e informações falsas ou enganosas."
     )
 
 
 @app.post("/ia/integracao")
 def integrar_ia(entrada: IntegracaoEntrada):
-    """A função `integrar_ia` é um endpoint de API que recebe uma solicitação POST contendo um objeto `IntegracaoEntrada`. Ele utiliza as informações fornecidas para fazer uma solicitação à API do OpenRouter, enviando o contexto, a pergunta, o objetivo, o formato de saída desejado e os limites para a IA. A resposta da IA é então retornada ao cliente.
+    """A função `integrar_ia` é um endpoint de API que recebe uma solicitação POST contendo um
+    objeto `IntegracaoEntrada`. Ele utiliza as informações fornecidas para fazer uma solicitação à
+    API do OpenRouter, enviando o contexto, a pergunta, o objetivo, o formato de saída desejado e
+    os limites para a IA. A resposta da IA é então retornada ao cliente.
 
     Args:
-        entrada (IntegracaoEntrada): Um objeto que contém o contexto, a pergunta, o objetivo, o formato de saída desejado e os limites para a IA.
+        entrada (IntegracaoEntrada): Um objeto que contém o contexto, a pergunta, o objetivo, o
+        formato de saída desejado e os limites para a IA.
 
     Raises:
-        HTTPException: Se as variáveis de ambiente para a chave da API ou a URL do OpenRouter não estiverem configuradas corretamente, ou se houver um erro ao fazer a solicitação à API do OpenRouter, uma exceção HTTP será levantada com um status code 500 e uma mensagem de detalhe apropriada.
-        HTTPException: Se houver um erro ao fazer a solicitação à API do OpenRouter, uma exceção HTTP será levantada com um status code 500 e uma mensagem de detalhe apropriada.
+        HTTPException: Se as variáveis de ambiente para a chave da API ou a URL do OpenRouter não
+        estiverem configuradas corretamente, ou se houver um erro ao fazer a solicitação à API do
+        OpenRouter, uma exceção HTTP será levantada com um status code 500 e uma mensagem de
+        detalhe apropriada.
+        HTTPException: Se houver um erro ao fazer a solicitação à API do OpenRouter, uma exceção
+        HTTP será levantada com um status code 500 e uma mensagem de detalhe apropriada.
 
     Returns:
-        dict: Um dicionário contendo a resposta da IA, com a chave "resposta" e o valor sendo a resposta gerada pela IA.
+        dict: Um dicionário contendo a resposta da IA, com a chave "resposta" e o valor sendo a
+        resposta gerada pela IA.
     """
     if not OPENROUTER_API_KEY or not OPENROUTER_URL:
         raise HTTPException(
