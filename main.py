@@ -13,18 +13,18 @@ app = FastAPI(
 )
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_BASE_URL = os.getenv("OPENROUTER_API_URL")
+OPENROUTER_URL = os.getenv("OPENROUTER_URL")
 MODEL_NAME = "stepfun/step-3.5-flash:free"
 
 client = OpenAI(
-    base_url=OPENROUTER_BASE_URL,
+    base_url=OPENROUTER_URL,
     api_key=OPENROUTER_API_KEY,
 ) 
-if OPENROUTER_API_KEY is None or OPENROUTER_BASE_URL is None:
+if OPENROUTER_API_KEY is None or OPENROUTER_URL is None:
     client = None
 else:
     client = OpenAI(
-        base_url=OPENROUTER_BASE_URL,
+        base_url=OPENROUTER_URL,
         api_key=OPENROUTER_API_KEY,
     )
 
