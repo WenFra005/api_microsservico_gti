@@ -54,16 +54,16 @@ def integrar_ia(entrada: IntegracaoEntrada):
 
     Raises:
         HTTPException: Se as variáveis de ambiente para a chave da API ou a URL do OpenRouter não
-        estiverem configuradas corretamente, ou se houver um erro ao fazer a solicitação à API do
-        OpenRouter, uma exceção HTTP será levantada com um status code 500 e uma mensagem de
-        detalhe apropriada.
-        HTTPException: Se houver um erro ao fazer a solicitação à API do OpenRouter, uma exceção
-        HTTP será levantada com um status code 500 e uma mensagem de detalhe apropriada.
+        estiverem configuradas corretamente.
+        HTTPException: Se ocorrer um timeout ao chamar o OpenRouter.
+        HTTPException: Se ocorrer uma falha na chamada ao OpenRouter, como um erro de rede ou uma
+        resposta inválida.
 
     Returns:
         dict: Um dicionário contendo a resposta da IA, com a chave "resposta" e o valor sendo a
         resposta gerada pela IA.
     """
+
     if not OPENROUTER_API_KEY or not OPENROUTER_URL:
         raise HTTPException(
             status_code=500,
