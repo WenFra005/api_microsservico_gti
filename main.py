@@ -33,8 +33,11 @@ def integrar_ia(entrada: IntegracaoEntrada):
     payload = {
         "model": MODEL_NAME,
         "messages": [
-            {"role": "system", "content": "Você é um assistente útil."},
-            {"role": "user", "content": entrada.texto}
+            {"role": "system", "content": f"Você é um assistente de IA especializado em {entrada.objetivo}"},
+            {"role": "user", "content": f"Contexto: {entrada.contexto}"},
+            {"role": "user", "content": f"Pergunta: {entrada.pergunta}"},
+            {"role": "user", "content": f"Formato de saída desejado: {entrada.formato_saida}"},
+            {"role": "system", "content": f"Limites: {entrada.limites}"}
         ],
     }
     
