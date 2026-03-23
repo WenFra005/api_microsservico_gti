@@ -7,7 +7,7 @@ from requests import RequestException, Timeout
 
 app = FastAPI(
     title="API de Implantacao de IA",
-    description="Uma API para integrar e implantar modelos de IA usando o OpenRouter.",
+    description="Uma API para gerenciar a implantação de modelos de IA",
     version="1.0.0",
 )
 
@@ -17,13 +17,9 @@ MODEL_NAME = os.getenv("MODEL_NAME")
 
 
 class IntegracaoEntrada(BaseModel):
-    """A classe `IntegracaoEntrada` é um modelo de dados que define a estrutura da entrada esperada
-    para a função de integração com a IA. Ela herda de `BaseModel` do Pydantic, o que permite a
-    validação automática dos dados de entrada.
+    """Payload de entrada para integração com IA.
 
-    Args:
-        BaseModel (class): A classe base para modelos de dados no Pydantic, que fornece
-        funcionalidades de validação e serialização.
+    Define os campos necessários para gerar uma resposta contextualizada no modelo configurado.
     """
 
     contexto: str = Field(
@@ -43,25 +39,9 @@ class IntegracaoEntrada(BaseModel):
 
 @app.post("/ia/integracao")
 def integrar_ia(entrada: IntegracaoEntrada):
-    """A função `integrar_ia` é um endpoint de API que recebe uma solicitação POST contendo um
-    objeto `IntegracaoEntrada`. Ele utiliza as informações fornecidas para fazer uma solicitação à
-    API do OpenRouter, enviando o contexto, a pergunta, o objetivo, o formato de saída desejado e
-    os limites para a IA. A resposta da IA é então retornada ao cliente.
+    """Gera uma resposta de IA com base no contexto e na pergunta informados.
 
-    Args:
-        entrada (IntegracaoEntrada): Um objeto que contém o contexto, a pergunta, o objetivo, o
-        formato de saída desejado e os limites para a IA.
-
-    Raises:
-        HTTPException: Se as variáveis de ambiente para a chave da API ou a URL do OpenRouter não
-        estiverem configuradas corretamente.
-        HTTPException: Se ocorrer um timeout ao chamar o OpenRouter.
-        HTTPException: Se ocorrer uma falha na chamada ao OpenRouter, como um erro de rede ou uma
-        resposta inválida.
-
-    Returns:
-        dict: Um dicionário contendo a resposta da IA, com a chave "resposta" e o valor sendo a
-        resposta gerada pela IA.
+    Este endpoint envia a solicitação ao provedor configurado e retorna o texto gerado.
     """
 
     if not OPENROUTER_API_KEY or not OPENROUTER_URL:
@@ -118,19 +98,17 @@ def integrar_ia(entrada: IntegracaoEntrada):
 
 @app.get("/")
 def read_root():
-    """Endpoint para a rota raiz da API.
+    """Retorna mensagem de boas-vindas da API.
 
-    Returns:
-        dict: Uma mensagem de boas-vindas à API.
+    Útil para validação rápida de disponibilidade do serviço.
     """
     return {"message": "Bem-vindo à API de Implantação de IA!"}
 
 
 @app.get("/status")
 def get_status():
-    """Endpoint para verificar o status da API.
+    """Retorna o status operacional da API.
 
-    Returns:
-        dict: Um dicionário indicando que a API está funcionando corretamente.
+    Endpoint de health-check para monitoramento e integração com orquestradores.
     """
     return {"status": "API está funcionando corretamente."}
