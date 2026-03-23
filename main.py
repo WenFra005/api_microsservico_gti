@@ -12,8 +12,8 @@ app = FastAPI(
 )
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-MODEL_NAME = "stepfun/step-3.5-flash:free"
+OPENROUTER_URL = os.getenv("OPENROUTER_URL")
+MODEL_NAME = os.getenv("MODEL_NAME")
 
 
 class IntegracaoEntrada(BaseModel):
