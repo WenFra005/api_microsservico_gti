@@ -7,7 +7,7 @@ from requests import RequestException, Timeout
 
 app = FastAPI(
     title="API de Implantacao de IA",
-    description="Uma API para gerenciar a implantação de modelos de IA",
+    description="Uma API para integrar e implantar modelos de IA usando o OpenRouter.",
     version="1.0.0",
 )
 
