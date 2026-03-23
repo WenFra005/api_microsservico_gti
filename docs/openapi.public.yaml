@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: API de Implantacao de IA
+  description: Uma API para gerenciar a implantação de modelos de IA
+  version: 1.0.0
+paths:
+  /ia/integracao:
+    post:
+      summary: Integrar com IA
+      description: |-
+        Envia contexto e pergunta ao modelo configurado no OpenRouter.
+
+        **Retorno**
+        - `resposta`: texto gerado pela IA.
+
+        **Possiveis erros**
+        - `500`: cliente da API nao configurado corretamente.
+        - `504`: timeout na chamada ao OpenRouter.
+        - `502`: falha de comunicacao com o OpenRouter.
+      operationId: integrar_ia_ia_integracao_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegracaoEntrada'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '500':
+          description: Cliente da API nao configurado corretamente.
+        '502':
+          description: Falha na chamada ao OpenRouter.
+        '504':
+          description: Timeout ao chamar o OpenRouter.
+  /:
+    get:
+      summary: Boas-vindas
+      description: Retorna uma mensagem simples de boas-vindas da API.
+      operationId: read_root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /status:
+    get:
+      summary: Status da API
+      description: Informa se a API esta ativa e respondendo normalmente.
+      operationId: get_status_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  schemas:
+    IntegracaoEntrada:
+      properties:
+        contexto:
+          type: string
+          title: Contexto
+          description: Contexto do problema ou tarefa para a IA
+        pergunta:
+          type: string
+          title: Pergunta
+          description: Pergunta principal para a IA responder
+        objetivo:
+          type: string
+          title: Objetivo
+          default: Fornecer uma resposta util e precisa com clareza e objetividade.
+        formato_saida:
+          type: string
+          title: Formato Saida
+          default: Texto simples
+        limites:
+          type: string
+          title: Limites
+          default: >-
+            Evitar respostas vagas ou genéricas e informações falsas ou
+            enganosas.
+      type: object
+      required:
+        - contexto
+        - pergunta
+      title: IntegracaoEntrada
+      description: Dados de entrada para a integracao com IA.
