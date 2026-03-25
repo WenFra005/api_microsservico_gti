@@ -6,17 +6,13 @@ info:
 paths:
   /ia/integracao:
     post:
-      summary: Integrar com IA
-      description: |-
-        Envia contexto e pergunta ao modelo configurado no OpenRouter.
+      summary: Integrar Ia
+      description: >-
+        Gera uma resposta de IA com base no contexto e na pergunta informados.
 
-        **Retorno**
-        - `resposta`: texto gerado pela IA.
 
-        **Possiveis erros**
-        - `500`: cliente da API nao configurado corretamente.
-        - `504`: timeout na chamada ao OpenRouter.
-        - `502`: falha de comunicacao com o OpenRouter.
+        Este endpoint envia a solicitação ao provedor configurado e retorna o
+        texto gerado.
       operationId: integrar_ia_ia_integracao_post
       requestBody:
         content:
@@ -26,20 +22,43 @@ paths:
         required: true
       responses:
         '200':
-          description: Successful Response
+          description: Resposta gerada pela IA
           content:
             application/json:
               schema: {}
+              example:
+                detail: Resposta gerada pela IA
+        '422':
+          description: Erro de validação da requisição
+          content:
+            application/json:
+              example:
+                detail: 'Erro de validação: campo ''pergunta'' é obrigatório.'
         '500':
-          description: Cliente da API nao configurado corretamente.
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                detail: Cliente da API não configurado corretamente.
         '502':
-          description: Falha na chamada ao OpenRouter.
+          description: Falha na comunicação com o OpenRouter
+          content:
+            application/json:
+              example:
+                detail: Falha na chamada ao OpenRouter.
         '504':
-          description: Timeout ao chamar o OpenRouter.
+          description: Timeout ao chamar o OpenRouter
+          content:
+            application/json:
+              example:
+                detail: Timeout ao chamar o OpenRouter.
   /:
     get:
-      summary: Boas-vindas
-      description: Retorna uma mensagem simples de boas-vindas da API.
+      summary: Read Root
+      description: |-
+        Retorna mensagem de boas-vindas da API.
+
+        Útil para validação rápida de disponibilidade do serviço.
       operationId: read_root__get
       responses:
         '200':
@@ -49,8 +68,13 @@ paths:
               schema: {}
   /status:
     get:
-      summary: Status da API
-      description: Informa se a API esta ativa e respondendo normalmente.
+      summary: Get Status
+      description: >-
+        Retorna o status operacional da API.
+
+
+        Endpoint de health-check para monitoramento e integração com
+        orquestradores.
       operationId: get_status_status_get
       responses:
         '200':
@@ -66,14 +90,16 @@ components:
           type: string
           title: Contexto
           description: Contexto do problema ou tarefa para a IA
+          default: Contexto padrão
         pergunta:
           type: string
           title: Pergunta
           description: Pergunta principal para a IA responder
+          default: Pergunta padrão
         objetivo:
           type: string
           title: Objetivo
-          default: Fornecer uma resposta util e precisa com clareza e objetividade.
+          default: Fornecer uma resposta útil e presisa com clareza e objetividade.
         formato_saida:
           type: string
           title: Formato Saida
@@ -85,8 +111,10 @@ components:
             Evitar respostas vagas ou genéricas e informações falsas ou
             enganosas.
       type: object
-      required:
-        - contexto
-        - pergunta
       title: IntegracaoEntrada
-      description: Dados de entrada para a integracao com IA.
+      description: >-
+        Payload de entrada para integração com IA.
+
+
+        Define os campos necessários para gerar uma resposta contextualizada no
+        modelo configurado.
