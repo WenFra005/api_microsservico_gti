@@ -23,10 +23,12 @@ class IntegracaoEntrada(BaseModel):
     """
 
     contexto: str = Field(
-        ..., description="Contexto do problema ou tarefa para a IA"
+        default="Contexto padrão",
+        description="Contexto do problema ou tarefa para a IA",
     )
     pergunta: str = Field(
-        ..., description="Pergunta principal para a IA responder"
+        default="Pergunta padrão",
+        description="Pergunta principal para a IA responder",
     )
     objetivo: str = Field(
         default="Fornecer uma resposta útil e presisa com clareza e objetividade."
@@ -37,7 +39,55 @@ class IntegracaoEntrada(BaseModel):
     )
 
 
-@app.post("/ia/integracao")
+@app.post(
+    "/ia/integracao",
+    responses={
+        200: {
+            "description": "Resposta gerada pela IA",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Resposta gerada pela IA"}
+                }
+            },
+        },
+        422: {
+            "description": "Erro de validação da requisição",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Erro de validação: campo 'pergunta' é obrigatório."
+                    }
+                }
+            },
+        },
+        500: {
+            "description": "Erro interno do servidor",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Cliente da API não configurado corretamente."
+                    }
+                }
+            },
+        },
+        502: {
+            "description": "Falha na comunicação com o OpenRouter",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Falha na chamada ao OpenRouter."}
+                }
+            },
+        },
+        504: {
+            "description": "Timeout ao chamar o OpenRouter",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Timeout ao chamar o OpenRouter."}
+                }
+            },
+        },
+    },
+)
 def integrar_ia(entrada: IntegracaoEntrada):
     """Gera uma resposta de IA com base no contexto e na pergunta informados.
 
