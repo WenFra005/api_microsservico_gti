@@ -51,6 +51,41 @@ python -m uvicorn main:app --host 0.0.0.0 --port 8000
 - OPENROUTER_URL: URL de chamada do endpoint do provedor.
 - MODEL_NAME: identificador do modelo utilizado.
 
+## 9. Como executar a API
+
+Para executar a API, siga os passos abaixo:
+
+1. Certifique-se de que as dependências estão instaladas e as variáveis de ambiente estão configuradas corretamente.
+   - Variáveis necessárias:
+     - `OPENROUTER_API_KEY`: chave de autenticação do provedor.
+     - `OPENROUTER_URL`: URL do endpoint do provedor.
+     - `MODEL_NAME`: identificador do modelo utilizado.
+
+2. Inicie o servidor utilizando o comando abaixo:
+
+```bash
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+3. Acesse os endpoints disponíveis para testar a API:
+   - `GET /`: Retorna uma mensagem de boas-vindas.
+   - `GET /status`: Verifica o status operacional da API.
+   - `POST /ia/integracao`: Envia contexto e pergunta para geração de resposta por IA.
+
+4. Para testar o endpoint POST, envie uma requisição com o seguinte corpo JSON de exemplo:
+
+```json
+{
+  "contexto": "Exemplo de contexto",
+  "pergunta": "Exemplo de pergunta",
+  "objetivo": "Exemplo de objetivo",
+  "formato_saida": "Texto simples",
+  "limites": "Exemplo de limites"
+}
+```
+
+5. Certifique-se de que o servidor está rodando e utilize ferramentas como Postman, cURL ou Swagger UI para interagir com a API.
+
 ## 9. Documentação da API
 
 ### 9.1 Swagger UI estático
