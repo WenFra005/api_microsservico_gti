@@ -37,7 +37,7 @@ O objetivo principal e disponibilizar um servico simples, padronizado e reutiliz
 
 Exemplo de execucao com Uvicorn:
 
-python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
 
 ## 8. Variaveis de ambiente
 - OPENROUTER_API_KEY: chave de autenticacao do provedor.
