@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 
 import requests
 from fastapi import FastAPI, HTTPException
@@ -11,6 +12,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
+load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_URL = os.getenv("OPENROUTER_URL")
 MODEL_NAME = os.getenv("MODEL_NAME")
