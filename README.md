@@ -47,7 +47,9 @@ O projeto é estruturado de forma simples e modular, permitindo fácil manutenç
 
 Exemplo de execução com Uvicorn:
 
+```bash
 python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
 ## 8. Variáveis de ambiente
 
@@ -107,7 +109,7 @@ MODEL_NAME=nome-do-modelo
 Execute o comando para construir a imagem:
 
 ```bash
-docker build -t api-microsservico-gti .
+docker build -t imagem-python-microsservico ./
 ```
 
 ### Passo 3: Executar o container
@@ -115,7 +117,7 @@ docker build -t api-microsservico-gti .
 Use o arquivo `.env` para passar as variáveis ao container:
 
 ```bash
-docker run --env-file .env -p 8000:8000 --name api-microsservico-gti api-microsservico-gti
+docker run -d --name python-microsservico-container -p 8000:8000 imagem-python-microsservico```
 ```
 
 ### Passo 4: Testar a API
