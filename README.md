@@ -117,7 +117,7 @@ docker build -t imagem-python-microsservico ./
 Use o arquivo `.env` para passar as variáveis ao container:
 
 ```bash
-docker run -d --name python-microsservico-container -p 8000:8000 imagem-python-microsservico```
+docker run --env-file .env -d --name python-microsservico-container -p 8000:8000 imagem-python-microsservico```
 ```
 
 ### Passo 4: Testar a API
