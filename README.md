@@ -67,9 +67,9 @@ Para executar a API, siga os passos abaixo:
 
 2. Inicie o servidor utilizando o comando abaixo:
 
-```bash
-python -m uvicorn main:app --host 0.0.0.0 --port 8000
-```
+    ```bash
+    python -m uvicorn main:app --host 0.0.0.0 --port 8000
+    ```
 
 3. Acesse os endpoints disponíveis para testar a API:
    - `GET /`: Retorna uma mensagem de boas-vindas.
@@ -78,17 +78,17 @@ python -m uvicorn main:app --host 0.0.0.0 --port 8000
 
 4. Para testar o endpoint POST, envie uma requisição com o seguinte corpo JSON de exemplo:
 
-```json
-{
-  "contexto": "Exemplo de contexto",
-  "pergunta": "Exemplo de pergunta",
-  "objetivo": "Exemplo de objetivo",
-  "formato_saida": "Texto simples",
-  "limites": "Exemplo de limites"
-}
-```
+    ```json
+    {
+      "contexto": "Exemplo de contexto",
+      "pergunta": "Exemplo de pergunta",
+      "objetivo": "Exemplo de objetivo",
+      "formato_saida": "Texto simples",
+      "limites": "Exemplo de limites"
+    }
+    ```
 
-5. Certifique-se de que o servidor está rodando e utilize ferramentas como Postman, cURL ou Swagger UI para interagir com a API.
+5. Certifique-se de que o servidor está rodando e utilize ferramentas como Postman, cURL ou a extensão do VScode Thunder Client para interagir com a API.
 
 ## 10. Como rodar a API em Docker?
 
@@ -149,6 +149,7 @@ sphinx-build -b html docs_sphinx/source docs_sphinx/_build/html
 ```
 
 Geração de PDF:
+
 ```bash
 sphinx-build -M latexpdf docs_sphinx/source docs_sphinx/_build
 ```
