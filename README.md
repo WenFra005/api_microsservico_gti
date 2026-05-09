@@ -117,7 +117,7 @@ docker build -t imagem-python-microsservico ./
 Use o arquivo `.env` para passar as variáveis ao container:
 
 ```bash
-docker run --env-file .env -d --name python-microsservico-container -p 8000:8000 imagem-python-microsservico```
+docker run --env-file .env -d --name python-microsservico-container -p 8000:8000 imagem-python-microsservico
 ```
 
 ### Passo 4: Testar a API
@@ -126,7 +126,6 @@ A API estará disponível em `http://localhost:8000`. Você pode:
 
 - Acessar a documentação interativa: `http://localhost:8000/docs`
 - Testar o endpoint de status: `curl http://localhost:8000/status`
-- Verificar os logs do container: `docker logs -f api-microsservico-gti`
 
 ### Parar o container
 
